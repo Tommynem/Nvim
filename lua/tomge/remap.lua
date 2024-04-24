@@ -24,6 +24,7 @@ vim.api.nvim_set_keymap(
 	":%s/old/new/gc<Left><Left><Left><Left><Left><Left><Left>",
 	{ desc = "[r]eplace all occurences of 'a' with 'b' in current buffer, confirm each time" }
 )
+vim.api.nvim_set_keymap("n", "<leader>ts", ":vsplit ", { desc = "vertical [s]plit", noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>tq", ":wqa<cr>", { desc = "Writes and quits all open buffers" })
 
 -- Other custom keymaps
@@ -33,9 +34,6 @@ vim.api.nvim_set_keymap("n", ":", "<cmd>FineCmdline<CR>", { noremap = true })
 
 -- Neotree
 vim.keymap.set("n", "<leader>nt", ":Neotree toggle<cr>", { desc = "Toggle Neotree" })
---vim.keymap.set(
---	"n",
---	"<leader>nf",
---	":Neotree action=focus source=filesystem position=left toggle=true<cr>",
---	{ desc = "Toggle Focus for Neotree" }
---)
+
+vim.api.nvim_set_keymap("n", "<leader>nf", ":Neotree<CR>", { desc = "Focus Neotree", noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>nb", ":wincmd p<CR>", { desc = "Focus Buffer", noremap = true, silent = true })
