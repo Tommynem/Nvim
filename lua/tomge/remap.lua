@@ -27,7 +27,7 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap("n", "<leader>tq", ":wqa<cr>", { desc = "Writes and quits all open buffers" })
 
 -- Other custom keymaps
-vim.api.nvim_set_keymap("i", "<Right>", "<C-y>", { desc = "Remaps autocomplete to right arrow key" })
+-- vim.api.nvim_set_keymap("i", "<Right>", "<C-y>", { desc = "Remaps autocomplete to right arrow key" })
 
 vim.api.nvim_set_keymap("n", ":", "<cmd>FineCmdline<CR>", { noremap = true })
 
