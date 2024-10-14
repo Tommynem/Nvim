@@ -1,39 +1,134 @@
--- Preconfigured by kickstart
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.hlsearch = true
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 
+-- FineCmdline keybinding
+vim.api.nvim_set_keymap("n", ":", "<cmd>FineCmdline<CR>", { silent = true })
+
+-- Toggle Colorizer
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>tc",
+	"<cmd>ColorizerToggle<CR>",
+	{ noremap = true, silent = true, desc = "Toggle Colorizer" }
+)
+
+-- Add this below the existing mappings for better terminal management
+vim.keymap.set("n", "<leader>tt", "<cmd>ToggleTerm<CR>", { noremap = true, silent = true, desc = "Toggle Terminal" })
+vim.keymap.set(
+	"n",
+	"<leader>tv",
+	"<cmd>ToggleTerm size=80 direction=vertical<CR>",
+	{ noremap = true, silent = true, desc = "Toggle Vertical Terminal" }
+)
+vim.keymap.set(
+	"n",
+	"<leader>tf",
+	"<cmd>ToggleTerm direction=float<CR>",
+	{ noremap = true, silent = true, desc = "Toggle Floating Terminal" }
+)
+
+-- Telescope
+require("telescope").setup({})
+local builtin = require("telescope.builtin")
+vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
+vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
+vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
+vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
+vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
+vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
+vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
+vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+
+vim.keymap.set("n", "/", function()
+	builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+		winblend = 10,
+		previewer = false,
+	}))
+end, { desc = "[/] Fuzzily search in current buffer" })
+
+vim.keymap.set("n", "<leader>s/", function()
+	builtin.live_grep({
+		grep_open_files = true,
+		prompt_title = "Live Grep in Open Files",
+	})
+end, { desc = "[S]earch [/] in Open Files" })
+
+-- Neovim config search shortcut
+vim.keymap.set("n", "<leader>sn", function()
+	builtin.find_files({ cwd = vim.fn.stdpath("config") })
+end, { desc = "[S]earch [N]eovim files" })
+
+-- Diagnostics mappings
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
--- Custom Keymaps
 
--- <leader>[t]omge
+-- Custom Keymaps
 vim.api.nvim_set_keymap(
 	"n",
 	"<leader>to",
 	[[i<cr><Esc>]],
-	{ noremap = true, silent = true, desc = "Newline at cursor position without entering insert mode" }
+	{ noremap = true, silent = true, desc = "[T]omge: Newline at cursor" }
+)
+vim.api.nvim_set_keymap("n", "<leader>tr", ":%s/old/new/gc", { desc = "[T]omge: [R]eplace all occurrences" })
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>ts",
+	":vsplit ",
+	{ desc = "[T]omge: Vertical [S]plit", noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap("n", "<leader>tq", ":wqa<cr>", { desc = "[T]omge: Write and quit all buffers" })
+
+-- Bufferline
+vim.api.nvim_set_keymap(
+	"n",
+	"[b",
+	":BufferLineCyclePrev<CR>",
+	{ noremap = true, silent = true, desc = "Previous buffer" }
+)
+vim.api.nvim_set_keymap("n", "b]", ":BufferLineCycleNext<CR>", { noremap = true, silent = true, desc = "Next buffer" })
+
+-- Bufferline specific jumps
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>1",
+	"<Cmd>BufferLineGoToBuffer 1<CR>",
+	{ noremap = true, silent = true, desc = "Go to buffer 1" }
 )
 vim.api.nvim_set_keymap(
 	"n",
-	"<leader>tr",
-	":%s/old/new/gc<Left><Left><Left><Left><Left><Left><Left>",
-	{ desc = "[r]eplace all occurences of 'a' with 'b' in current buffer, confirm each time" }
+	"<leader>2",
+	"<Cmd>BufferLineGoToBuffer 2<CR>",
+	{ noremap = true, silent = true, desc = "Go to buffer 2" }
 )
-vim.api.nvim_set_keymap("n", "<leader>ts", ":vsplit ", { desc = "vertical [s]plit", noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>tq", ":wqa<cr>", { desc = "Writes and quits all open buffers" })
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>3",
+	"<Cmd>BufferLineGoToBuffer 3<CR>",
+	{ noremap = true, silent = true, desc = "Go to buffer 3" }
+)
 
--- Other custom keymaps
--- vim.api.nvim_set_keymap("i", "<Right>", "<C-y>", { desc = "Remaps autocomplete to right arrow key" })
+-- Buffer manipulation
+vim.api.nvim_set_keymap("n", "<leader>n", ":bn<CR>", { noremap = true, silent = true, desc = "Next buffer" })
+vim.api.nvim_set_keymap("n", "<leader>p", ":bp<CR>", { noremap = true, silent = true, desc = "Previous buffer" })
+vim.api.nvim_set_keymap("n", "<leader>x", ":bd<CR>", { noremap = true, silent = true, desc = "Close buffer" })
 
-vim.api.nvim_set_keymap("n", ":", "<cmd>FineCmdline<CR>", { noremap = true })
+-- Toggle buffers
+vim.api.nvim_set_keymap(
+	"n",
+	"<Space><Space>",
+	"<C-^>",
+	{ noremap = true, silent = true, desc = "Toggle previous buffer" }
+)
+vim.api.nvim_set_keymap("n", "t", "<C-o>", { noremap = true, silent = true, desc = "Go back" })
 
--- Neotree
-vim.keymap.set("n", "<leader>nt", ":Neotree toggle<cr>", { desc = "Toggle Neotree" })
+-- Indentation in visual mode
+vim.api.nvim_set_keymap("x", ",", "<gv", { noremap = true, silent = true, desc = "Indent left" })
+vim.api.nvim_set_keymap("x", ".", ">gv", { noremap = true, silent = true, desc = "Indent right" })
 
-vim.api.nvim_set_keymap("n", "<leader>nf", ":Neotree<CR>", { desc = "Focus Neotree", noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>nb", ":wincmd p<CR>", { desc = "Focus Buffer", noremap = true, silent = true })
+-- Oil file explorer
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
