@@ -245,7 +245,13 @@ require("lazy").setup({
 			})
 		end,
 	},
-
+	{
+		"codota/tabnine-nvim",
+		build = "./dl_binaries.sh",
+		config = function()
+			require("tomge.tabnine")
+		end,
+	},
 	{ -- Autoformat
 		"stevearc/conform.nvim",
 		lazy = false,
@@ -381,6 +387,7 @@ require("lazy").setup({
 				sources = {
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
+					{ name = "tabnine" },
 					{ name = "path" },
 				},
 			})
