@@ -73,7 +73,7 @@ vim.api.nvim_set_keymap(
 	[[i<cr><Esc>]],
 	{ noremap = true, silent = true, desc = "[T]omge: Newline at cursor" }
 )
-vim.api.nvim_set_keymap("n", "<leader>te", "CsvViewToggle", { desc = "[T]omge toggle csv view" })
+vim.api.nvim_set_keymap("n", "<leader>te", ":CsvViewToggle", { desc = "[T]omge toggle csv view" })
 vim.api.nvim_set_keymap("n", "<leader>tr", ":%s/old/new/gc", { desc = "[T]omge: [R]eplace all occurrences" })
 vim.api.nvim_set_keymap(
 	"n",
