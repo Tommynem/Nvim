@@ -393,7 +393,12 @@ require("lazy").setup({
 			})
 		end,
 	},
-
+	{
+		"hat0uma/csvview.nvim",
+		config = function()
+			require("csvview").setup()
+		end,
+	},
 	{ -- You can easily change to a different colorscheme.
 		-- Change the name of the colorscheme plugin below, and then
 		-- change the command in the config to whatever the name of that colorscheme is.
