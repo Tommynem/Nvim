@@ -28,6 +28,12 @@ vim.keymap.set(
 	"<cmd>ToggleTerm direction=float<CR>",
 	{ noremap = true, silent = true, desc = "Toggle Floating Terminal" }
 )
+vim.keymap.set(
+	"n",
+	"<leader>lg",
+	"<cmd>ToggleTerm direction=float<CR>lg<CR>",
+	{ noremap = true, silent = true, desc = "Lazy Git" }
+)
 
 -- Telescope
 require("telescope").setup({})
