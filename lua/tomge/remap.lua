@@ -150,3 +150,4 @@ vim.api.nvim_set_keymap("x", ".", ">gv", { noremap = true, silent = true, desc =
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 vim.keymap.set("n", "<leader>on", ":ObsidianNew<CR>", { desc = "Create a new note" })
+vim.keymap.set("n", "<leader>oo", ":ObsidianOpen<CR>", { desc = "Opens the current note in obsidian" })
