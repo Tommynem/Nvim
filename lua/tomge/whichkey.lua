@@ -46,7 +46,6 @@ wk.register({
 	["[d"] = { vim.diagnostic.goto_prev, "Previous [D]iagnostic" },
 	["]d"] = { vim.diagnostic.goto_next, "Next [D]iagnostic" },
 	["<leader>e"] = { vim.diagnostic.open_float, "[E]rror messages" },
-	["<leader>q"] = { vim.diagnostic.setloclist, "[Q]uickfix list" },
 })
 
 -- Additional custom keybindings
