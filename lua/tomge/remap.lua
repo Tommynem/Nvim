@@ -56,6 +56,22 @@ vim.keymap.set("n", "<leader>s/", function()
 	})
 end, { desc = "[S]earch [/] in Open Files" })
 
+local telescope = require("telescope.builtin")
+-- Search for files in the vault
+vim.keymap.set("n", "<leader>of", function()
+	telescope.find_files({
+		prompt_title = "Search Vault Files",
+		cwd = "/Users/tomge/Library/Mobile Documents/iCloud~md~obsidian/Documents/Everything all at once",
+	})
+end, { desc = "Search Vault Files" })
+
+-- Search for text using grep in the vault
+vim.keymap.set("n", "<leader>og", function()
+	telescope.live_grep({
+		prompt_title = "Grep Vault",
+		cwd = "/Users/tomge/Library/Mobile Documents/iCloud~md~obsidian/Documents/Everything all at once",
+	})
+end, { desc = "Grep Vault" })
 -- Neovim config search shortcut
 vim.keymap.set("n", "<leader>sn", function()
 	builtin.find_files({ cwd = vim.fn.stdpath("config") })
@@ -132,3 +148,5 @@ vim.api.nvim_set_keymap("x", ".", ">gv", { noremap = true, silent = true, desc =
 
 -- Oil file explorer
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
+vim.keymap.set("n", "<leader>on", ":ObsidianNew<CR>", { desc = "Create a new note" })

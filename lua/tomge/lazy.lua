@@ -11,22 +11,13 @@ require("lazy").setup({
 	"mg979/vim-visual-multi",
 	{
 		"epwalsh/obsidian.nvim",
-		version = "*", -- recommended, use latest release instead of latest commit
+		version = "*",
 		lazy = true,
 		ft = "markdown",
-		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-		-- event = {
-		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-		--   -- refer to `:h file-pattern` for more examples
-		--   "BufReadPre path/to/my-vault/*.md",
-		--   "BufNewFile path/to/my-vault/*.md",
-		-- },
 		dependencies = {
-			-- Required.
 			"nvim-lua/plenary.nvim",
-
-			-- see below for full list of optional dependencies 👇
+			"nvim-telescope/telescope.nvim",
+			"nvim-treesitter/nvim-treesitter", -- Optional for better syntax highlighting
 		},
 		opts = {
 			workspaces = {
@@ -35,8 +26,26 @@ require("lazy").setup({
 					path = "/Users/tomge/Library/Mobile Documents/iCloud~md~obsidian/Documents/Everything all at once",
 				},
 			},
-
-			-- see below for full list of options 👇
+			-- Enables wiki-style link completion and navigation
+			completion = {
+				nvim_cmp = true,
+			},
+			-- Optional, integrates with telescope.nvim for search
+			picker = {
+				name = "telescope.nvim",
+			},
+			-- Syntax highlighting
+			ui = {
+				enable = true,
+				checkboxes = {
+					[" "] = { char = "☐", hl_group = "ObsidianTodo" },
+					["x"] = { char = "✔", hl_group = "ObsidianDone" },
+				},
+			},
+			-- Paste images
+			attachments = {
+				img_folder = "other/images",
+			},
 		},
 	},
 	{ "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
@@ -415,6 +424,7 @@ require("lazy").setup({
 					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
+					{ name = "obsidian" },
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 					{ name = "tabnine" },
@@ -506,7 +516,7 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		opts = {
-			ensure_installed = { "bash", "c", "html", "lua", "luadoc", "markdown", "vim", "vimdoc" },
+			ensure_installed = { "bash", "c", "html", "lua", "luadoc", "markdown", "vim", "vimdoc", "markdown_inline" },
 			-- Autoinstall languages that are not installed
 			auto_install = true,
 			highlight = {
