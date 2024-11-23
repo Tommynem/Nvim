@@ -212,7 +212,7 @@ require("lazy").setup({
 
 					map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
 
-					map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+					map("<leader>ss", require("telescope.builtin").lsp_document_symbols, "[S]earch [S]ymbols")
 
 					map(
 						"<leader>ws",
