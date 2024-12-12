@@ -9,6 +9,20 @@ require("lazy").setup({
 	"hrsh7th/nvim-cmp",
 	"numToStr/Comment.nvim",
 	"mg979/vim-visual-multi",
+	"mfussenegger/nvim-dap",
+	{
+		"mfussenegger/nvim-dap-python",
+		ft = "python",
+		dependencies = {
+			"mfussenegger/nvim-dap",
+			"rcarriga/nvim-dap-ui",
+		},
+		config = function(_, opts)
+			local path = "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12"
+			require("dap-python").setup(path)
+		end,
+	},
+	{ "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
 	{
 		"epwalsh/obsidian.nvim",
 		version = "*",
@@ -430,6 +444,11 @@ require("lazy").setup({
 					{ name = "tabnine" },
 					{ name = "path" },
 				},
+				cmp.setup.filetype("markdown", {
+					sources = cmp.config.sources({
+						{ name = "buffer" }, -- Autocomplete words from the current buffer
+					}),
+				}),
 			})
 		end,
 	},

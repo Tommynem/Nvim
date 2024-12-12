@@ -155,5 +155,15 @@ vim.api.nvim_set_keymap("x", ".", ">gv", { noremap = true, silent = true, desc =
 -- Oil file explorer
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
+-- Obsidian
 vim.keymap.set("n", "<leader>on", ":ObsidianNew<CR>", { desc = "Create a new note" })
 vim.keymap.set("n", "<leader>oo", ":ObsidianOpen<CR>", { desc = "Opens the current note in obsidian" })
+vim.keymap.set("n", "<leader>-", "i- [ ]<ESC>A", { desc = "Opens the current note in obsidian" })
+
+-- debugging
+local dap = require("dap")
+vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "[D]AP: Toggle [B]reakpoint" })
+vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "[D]AP: [C]ontinue" })
+vim.keymap.set("n", "<leader>dl", function()
+	dap.run(dap.configurations.python[1])
+end, { desc = "[D]AP: [L]aunch main.py" })
