@@ -7,7 +7,19 @@ vim.api.nvim_set_keymap("n", "<Leader>q", ":wqa<CR>", { noremap = true, silent =
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 vim.keymap.set("n", "yp", "yyp", { desc = "Duplicate line" })
 
+-- [b]ack in jump list
 vim.keymap.set("n", "<C-b>", "<C-o>", { noremap = true, silent = true, desc = "Jump back in jump list" })
+-- [f]orward in jump list
+vim.keymap.set("n", "<C-f>", "<C-i>", { noremap = true, silent = true, desc = "Jump forward in jump list" })
+-- increment next number
+vim.keymap.set("n", "<C-i>", "<C-a>", { noremap = true, silent = true, desc = "Increment number under the cursor" })
+
+vim.keymap.set(
+	"n",
+	"<C-a>",
+	":keepjumps normal! ggVG<CR>",
+	{ noremap = true, silent = true, desc = "Select entire buffer without affecting jump list" }
+)
 
 pcall(vim.keymap.del, "n", "<C-o>")
 pcall(vim.keymap.del, "i", "<C-o>")
