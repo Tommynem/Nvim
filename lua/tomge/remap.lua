@@ -1,8 +1,26 @@
+-- Custom or unsorted
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.opt.hlsearch = true
 vim.api.nvim_set_keymap("n", "<Leader>q", ":wqa<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
+vim.keymap.set("n", "yp", "yyp", { desc = "Duplicate line" })
+
+vim.keymap.set("n", "<C-b>", "<C-o>", { noremap = true, silent = true, desc = "Jump back in jump list" })
+
+pcall(vim.keymap.del, "n", "<C-o>")
+pcall(vim.keymap.del, "i", "<C-o>")
+
+vim.keymap.set("n", "<C-o>", "o<Esc>", { noremap = true, silent = true, desc = "Insert a new line after" })
+vim.keymap.set(
+	"i",
+	"<C-o>",
+	"<Esc>o",
+	{ noremap = true, silent = true, desc = "Insert a new line after (insert mode)" }
+)
+
+vim.keymap.set("n", "<C-e>", "<C-w>", { noremap = true, silent = true })
 
 -- FineCmdline keybinding
 vim.api.nvim_set_keymap("n", ":", "<cmd>FineCmdline<CR>", { silent = true })
