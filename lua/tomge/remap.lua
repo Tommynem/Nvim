@@ -176,7 +176,6 @@ vim.api.nvim_set_keymap(
 	"<C-^>",
 	{ noremap = true, silent = true, desc = "Toggle previous buffer" }
 )
-vim.api.nvim_set_keymap("n", "t", "<C-o>", { noremap = true, silent = true, desc = "Go back" })
 
 -- Indentation in visual mode
 vim.api.nvim_set_keymap("x", ",", "<gv", { noremap = true, silent = true, desc = "Indent left" })

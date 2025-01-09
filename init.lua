@@ -1,34 +1,4 @@
 require("tomge")
-
---[[
--- Locations: Plugins: 250, Keymaps: 160, LSP: 500
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-========                                    .-----.          ========
-========         .----------------------.   | === |          ========
-========         |.-""""""""""""""""""-.|   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||   KICKSTART.NVIM   ||   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||                    ||   |-----|          ========
-========         ||:Tutor              ||   |:::::|          ========
-========         |'-..................-'|   |____o|          ========
-========         `"")----------------(""`   ___________      ========
-========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-========       /:::========|  |==hjkl==:::\  \ required \    ========
-========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-========                                                     ========
-=====================================================================
-=====================================================================
-kickstart Guide:
-Unmodified file: 
-https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
-
--- ]]
---
---
--- VIM Option (:help vim.opt)
 vim.g.have_nerd_font = true
 vim.opt.relativenumber = true
 vim.opt.mouse = "a"
@@ -62,3 +32,9 @@ vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,
 vim.g.python3_host_prog = "/opt/homebrew/bin/python3.12"
 vim.g.netrw_browsex_viewer = "open"
 vim.opt.path:append(".,/usr/include,")
+
+-- disable base file explorer
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
+vim.opt.termguicolors = true

@@ -70,9 +70,6 @@ wk.register({
 		-- Quick toggle to previous buffer
 		["<space>"] = { "<C-^>", "Toggle previous buffer" },
 
-		-- “t” jumps back in the jumplist
-		t = { "<C-o>", "Go back (jumplist)" },
-
 		-- BufferLine goto
 		["1"] = { "<Cmd>BufferLineGoToBuffer 1<CR>", "Go to buffer 1" },
 		["2"] = { "<Cmd>BufferLineGoToBuffer 2<CR>", "Go to buffer 2" },
