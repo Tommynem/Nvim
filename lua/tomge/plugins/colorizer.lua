@@ -1,4 +1,4 @@
--- lua/tomge/colorizer.lua
+-- NvChad/nvim-colorizer.lua
 require("colorizer").setup({
 	filetypes = {
 		"css",

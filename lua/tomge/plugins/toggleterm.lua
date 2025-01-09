@@ -1,4 +1,4 @@
--- lua/tomge/toggleterm.lua
+-- akinsho/toggleterm.nvim
 require("toggleterm").setup({
 	size = 20,
 	open_mapping = [[<c-\>]],
@@ -11,7 +11,3 @@ require("toggleterm").setup({
 	close_on_exit = true,
 	shell = vim.o.shell,
 })
-
--- Custom keymaps for managing terminals
-local Terminal = require("toggleterm.terminal").Terminal
-local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })

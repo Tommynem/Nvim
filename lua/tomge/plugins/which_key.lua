@@ -1,3 +1,4 @@
+-- folke/which-key.nvim
 -- which-key.lua
 local wk = require("which-key")
 wk.setup({})
