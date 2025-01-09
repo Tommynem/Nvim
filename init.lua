@@ -58,3 +58,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 vim.opt.conceallevel = 2
 vim.opt.concealcursor = "nc"
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+vim.g.python3_host_prog = "/opt/homebrew/bin/python3.12"
+vim.g.netrw_browsex_viewer = "open"
+vim.opt.path:append(".,/usr/include,")
