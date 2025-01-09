@@ -5,12 +5,11 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
-	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
-	"hrsh7th/nvim-cmp",
-	"numToStr/Comment.nvim",
-	"mg979/vim-visual-multi",
-	"mfussenegger/nvim-dap",
-	-- "p00f/nvim-ts-rainbow",
+	"tpope/vim-sleuth", -- Detect tabstop, indentation and shiftwidth automatically
+	"numToStr/Comment.nvim", -- e.g. gc mapping
+	"mg979/vim-visual-multi", -- multi-cursor
+	"mfussenegger/nvim-dap", -- debug adapter protocol for nvim
+	"hrsh7th/cmp-nvim-lsp", -- nvim cmp lsp source
 	{
 		"mfussenegger/nvim-dap-python",
 		ft = "python",
@@ -22,8 +21,8 @@ require("lazy").setup({
 			local path = "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12"
 			require("dap-python").setup(path)
 		end,
-	},
-	{ "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
+	}, -- dap integration for python
+	{ "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } }, --nicer debugging ui
 	{
 		"epwalsh/obsidian.nvim",
 		version = "*",
@@ -59,29 +58,23 @@ require("lazy").setup({
 			},
 			-- Paste images
 			attachments = {
-				img_folder = "other/images",
+				img_folder = "pasted/images",
 			},
 		},
 	},
-	{ "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
-	opts = {
-		-- add any options here
-	},
+	{ "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" }, -- nice file/buffer tabs on top
 	lazy = false,
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		config = true,
-	},
-	"hrsh7th/cmp-nvim-lsp",
+	}, --auto closing brackets
 	{
 		"VonHeikemen/fine-cmdline.nvim",
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 		},
-	},
-	-- "gc" to comment visual regions/lines
-	{ "numToStr/Comment.nvim", opts = {} },
+	}, --better : commands -> gui
 	{
 		"lewis6991/gitsigns.nvim",
 		opts = {
@@ -93,28 +86,28 @@ require("lazy").setup({
 				changedelete = { text = "~" },
 			},
 		},
-	},
+	}, -- git changes on the left side
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
 		config = function()
 			require("which-key").setup()
 		end,
-	},
+	}, -- command descriptions
 	{
 		"akinsho/toggleterm.nvim",
 		version = "^2",
 		config = function()
 			require("tomge.toggleterm")
 		end,
-	},
+	}, -- toggable terminal
 	{
 		"NvChad/nvim-colorizer.lua",
 		config = function()
 			require("tomge.colorizer")
 		end,
-	},
-	{ -- Fuzzy Finder (files, lsp, etc)
+	}, -- makes rbg values appear in their color like: #991155
+	{
 		"nvim-telescope/telescope.nvim",
 		event = "VeryLazy",
 		branch = "0.1.x",
@@ -180,7 +173,7 @@ require("lazy").setup({
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[S]earch [N]eovim files" })
 		end,
-	},
+	}, --the GOAT
 	{
 
 		"rmagatti/auto-session",
@@ -193,7 +186,7 @@ require("lazy").setup({
 			suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
 			-- log_level = 'debug',
 		},
-	},
+	}, --reopenes sessions per directory
 	{ -- LSP Configuration & Plugins
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -298,8 +291,8 @@ require("lazy").setup({
 				},
 			})
 		end,
-	},
-	{ -- Autoformat
+	}, --- core lsp config
+	{
 		"stevearc/conform.nvim",
 		lazy = false,
 		keys = {
@@ -315,9 +308,6 @@ require("lazy").setup({
 		opts = {
 			notify_on_error = false,
 			format_on_save = function(bufnr)
-				-- Disable "format_on_save lsp_fallback" for languages that don't
-				-- have a well standardized coding style. You can add additional
-				-- languages here or re-enable it for the disabled ones.
 				local disable_filetypes = { c = true, cpp = true }
 				return {
 					timeout_ms = 500,
@@ -326,17 +316,10 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				-- Conform can also run multiple formatters sequentially
-				-- python = { "isort", "black" },
-				--
-				-- You can use a sub-list to tell conform to run *until* a formatter
-				-- is found.
-				-- javascript = { { "prettierd", "prettier" } },
 			},
 		},
-	},
-
-	{ -- Autocompletion
+	}, -- auto formatting framework
+	{
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
 		dependencies = {
@@ -366,9 +349,6 @@ require("lazy").setup({
 			},
 			"saadparwaiz1/cmp_luasnip",
 
-			-- Adds other completion capabilities.
-			--  nvim-cmp does not ship with all sources by default. They are split
-			--  into multiple repos for maintenance purposes.
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
 		},
@@ -452,37 +432,27 @@ require("lazy").setup({
 		end,
 	},
 
-	{ -- You can easily change to a different colorscheme.
-		-- Change the name of the colorscheme plugin below, and then
-		-- change the command in the config to whatever the name of that colorscheme is.
-		--
-		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+	{
 		"folke/tokyonight.nvim",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		init = function()
-			-- Load the colorscheme here.
-			-- Like many other themes, this one has different styles, and you could load
-			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
 			vim.cmd.colorscheme("tokyonight-night")
-
-			-- You can configure highlights by doing something like:
 			vim.cmd.hi("Comment gui=none")
 		end,
-	},
+	}, --theme
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
 		---@module "ibl"
 		---@type ibl.config
 		opts = {},
-	},
-	-- Highlight todo, notes, etc in comments
+	}, -- adds visual indentation guides
 	{
 		"folke/todo-comments.nvim",
 		event = "VimEnter",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = { signs = false },
-	},
+	}, --highlights TODO: comments and such
 	{
 		"kylechui/nvim-surround",
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -492,8 +462,8 @@ require("lazy").setup({
 				-- Configuration here, or leave empty to use defaults
 			})
 		end,
-	},
-	{ -- Collection of various small independent plugins/modules
+	}, -- add text around other text
+	{
 		"echasnovski/mini.nvim",
 		config = function()
 			-- Better Around/Inside textobjects
@@ -529,7 +499,7 @@ require("lazy").setup({
 			-- ... and there is more!
 			--  Check out: https://github.com/echasnovski/mini.nvim
 		end,
-	},
+	}, --collection of lots of small things
 	{
 		"stevearc/oil.nvim",
 		---@module 'oil'
@@ -538,9 +508,9 @@ require("lazy").setup({
 		-- Optional dependencies
 		dependencies = { { "echasnovski/mini.icons", opts = {} } },
 		-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
-	},
+	}, --directories are buffers now!
 
-	{ -- Highlight, edit, and navigate code
+	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		opts = {
@@ -561,35 +531,8 @@ require("lazy").setup({
 
 			---@diagnostic disable-next-line: missing-fields
 			require("nvim-treesitter.configs").setup(opts)
-
-			-- There are additional nvim-treesitter modules that you can use to interact
-			-- with nvim-treesitter. You should go explore a few and see what interests you:
-			--
-			--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-			--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-			--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 		end,
-	},
-
-	-- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
-	-- init.lua. If you want these files, they are in the repository, so you can just download them and
-	-- place them in the correct locations.
-
-	-- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
-	--
-	--  Here are some example plugins that I've included in the Kickstart repository.
-	--  Uncomment any of the lines below to enable them (you will need to restart nvim).
-	--
-	-- require 'kickstart.plugins.debug',
-	-- require 'kickstart.plugins.indent_line',
-	-- require 'kickstart.plugins.lint',
-
-	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-	--    This is the easiest way to modularize your config.
-	--
-	--  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-	--    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-	-- { import = 'custom.plugins' },
+	}, -- Highlight, edit, and navigate code
 }, {
 	ui = {
 		-- If you are using a Nerd Font: set icons to an empty table which will use the
