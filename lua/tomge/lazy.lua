@@ -9,11 +9,13 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 
 	-- == SINGLE-LINE PLUGINS ==
+	-- "mg979/vim-visual-multi", -- multi-cursor, unused
 	"tpope/vim-sleuth", -- auto indentation
 	"numToStr/Comment.nvim", -- e.g. gc mapping
-	"mg979/vim-visual-multi", -- multi-cursor
 	"mfussenegger/nvim-dap", -- debug adapter protocol for nvim
 	"hrsh7th/cmp-nvim-lsp", -- nvim cmp LSP source
+	"octaltree/cmp-look",
+	"f3fora/cmp-spell",
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
@@ -42,6 +44,15 @@ require("lazy").setup({
 		},
 		config = function()
 			require("tomge.plugins.obsidian")
+		end,
+	},
+	-- lazy.nvim
+	{
+		"folke/snacks.nvim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("tomge.plugins.snacks").setup()
 		end,
 	},
 	{
@@ -171,7 +182,7 @@ require("lazy").setup({
 	},
 	{
 		"folke/tokyonight.nvim",
-		priority = 1000,
+		priority = 1001,
 		config = function()
 			require("tomge.plugins.tokyonight")
 		end,
