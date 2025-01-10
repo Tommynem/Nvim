@@ -156,14 +156,12 @@ wk.register({
 			t = { "<cmd>ToggleTerm<CR>", "Toggle Terminal" },
 			v = { "<cmd>ToggleTerm size=80 direction=vertical<CR>", "Toggle Vertical Terminal" },
 			f = { "<cmd>ToggleTerm direction=float<CR>", "Toggle Floating Terminal" },
-			g = { "<cmd>ToggleTerm direction=float<CR>lg<CR>", "LazyGit (float)" },
 
 			-- CSV
 			e = { ":CsvViewToggle<CR>", "Toggle CSV view" },
 
 			-- Misc
 			o = { "i<cr><Esc>", "Newline at cursor" },
-			r = { ":%s/old/new/gc", "[R]eplace all occurrences" },
 			s = { ":vsplit ", "Vertical [S]plit" },
 			q = { ":wqa<cr>", "Write & quit all buffers" },
 		},
