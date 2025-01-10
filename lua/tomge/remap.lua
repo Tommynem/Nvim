@@ -58,12 +58,6 @@ vim.keymap.set(
 	"<cmd>ToggleTerm direction=float<CR>",
 	{ noremap = true, silent = true, desc = "Toggle Floating Terminal" }
 )
-vim.keymap.set(
-	"n",
-	"<leader>lg",
-	"<cmd>ToggleTerm direction=float<CR>lg<CR>",
-	{ noremap = true, silent = true, desc = "Lazy Git" }
-)
 
 -- Telescope
 require("telescope").setup({})
@@ -119,21 +113,45 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagn
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 
 -- Custom Keymaps
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>to",
-	[[i<cr><Esc>]],
-	{ noremap = true, silent = true, desc = "[T]omge: Newline at cursor" }
-)
 vim.api.nvim_set_keymap("n", "<leader>te", ":CsvViewToggle", { desc = "[T]omge toggle csv view" })
-vim.api.nvim_set_keymap("n", "<leader>tr", ":%s/old/new/gc", { desc = "[T]omge: [R]eplace all occurrences" })
-vim.api.nvim_set_keymap(
-	"n",
-	"<leader>ts",
-	":vsplit ",
-	{ desc = "[T]omge: Vertical [S]plit", noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap("n", "<leader>tq", ":wqa<cr>", { desc = "[T]omge: Write and quit all buffers" })
+
+-- Custom replace ui
+vim.keymap.set("n", "<leader>tr", function()
+	local snacks = require("snacks")
+
+	-- 1. Prompt for "Search text"
+	snacks.input({
+		prompt = "Search text: ",
+		icon = " ",
+	}, function(old)
+		if not old or old == "" then
+			-- User canceled or empty input
+			return
+		end
+
+		-- 2. Prompt for "Replace text"
+		snacks.input({
+			prompt = "Replace text: ",
+			icon = " ",
+		}, function(new)
+			if new == nil then
+				-- Canceled
+				return
+			end
+
+			-- 3. Execute the :%s command
+			-- g = global
+			-- c = confirm on each occurrence
+			--
+			-- NOTE: This is a naive approach that doesn't escape
+			-- special regex characters. If 'old' or 'new' contain
+			-- '/', it may break. For a robust solution, consider
+			-- escaping or using a literal search mode.
+			local cmd = string.format("%%s/%s/%s/gc", old, new)
+			vim.cmd(cmd)
+		end)
+	end)
+end, { desc = "Custom Search & Replace with snacks.input" })
 
 -- Bufferline
 vim.api.nvim_set_keymap(
@@ -167,7 +185,7 @@ vim.api.nvim_set_keymap(
 -- Buffer manipulation
 vim.api.nvim_set_keymap("n", "<leader>n", ":bn<CR>", { noremap = true, silent = true, desc = "Next buffer" })
 vim.api.nvim_set_keymap("n", "<leader>p", ":bp<CR>", { noremap = true, silent = true, desc = "Previous buffer" })
-vim.api.nvim_set_keymap("n", "<leader>x", ":bd<CR>", { noremap = true, silent = true, desc = "Close buffer" })
+-- vim.api.nvim_set_keymap("n", "<leader>x", ":bd<CR>", { noremap = true, silent = true, desc = "Close buffer" })
 
 -- Toggle buffers
 vim.api.nvim_set_keymap(
@@ -196,3 +214,57 @@ vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "[D]AP: [C]ontinue" })
 vim.keymap.set("n", "<leader>dl", function()
 	dap.run(dap.configurations.python[1])
 end, { desc = "[D]AP: [L]aunch main.py" })
+
+-- snacks keymaps
+local ok, snacks = pcall(require, "snacks")
+if not ok then
+	return
+end
+
+local map = vim.keymap.set
+
+-- Git Browse: open the current file/branch in your web browser
+map("n", "<leader>gB", function()
+	snacks.gitbrowse()
+end, { desc = "Git Browse (current file/branch)" })
+
+map("n", "<leader>lg", function()
+	snacks.lazygit()
+end, { desc = "Open Lazygit" })
+-- Git blame the current line
+map("n", "<leader>gb", function()
+	snacks.git.blame_line()
+end, { desc = "Git Blame line" })
+
+-- Dismiss all notifications
+map("n", "<leader>td", function()
+	snacks.notifier.hide()
+end, { desc = "Dismiss All Notifications" })
+
+-- Rename Current File (with LSP support)
+map("n", "<leader>fr", function()
+	snacks.rename.rename_file()
+end, { desc = "Rename Current File (snacks.rename)" })
+
+local has_mini_bufremove, mini_bufremove = pcall(require, "mini.bufremove")
+local has_mini_map, mini_map = pcall(require, "mini.map")
+
+-- mini.nvim
+if has_mini_bufremove then
+	map("n", "<leader>x", function()
+		mini_bufremove.delete(0, false) -- current buffer, force=false
+	end, { desc = "[B]uffer [D]elete (mini.bufremove)" })
+end
+
+if has_mini_map then
+	-- Toggle the code minimap
+	map("n", "<leader>fm", function()
+		if mini_map.auto_enabled then
+			mini_map.close()
+			mini_map.auto_enabled = false
+		else
+			mini_map.open()
+			mini_map.auto_enabled = true
+		end
+	end, { desc = "Toggle code minimap (mini.map)" })
+end
