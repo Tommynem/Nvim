@@ -6,7 +6,6 @@ vim.opt.hlsearch = true
 vim.api.nvim_set_keymap("n", "<Leader>q", ":wqa<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 vim.keymap.set("n", "yp", "yyp", { desc = "Duplicate line" })
-
 -- [b]ack in jump list
 vim.keymap.set("n", "<C-b>", "<C-o>", { noremap = true, silent = true, desc = "Jump back in jump list" })
 -- [f]orward in jump list
@@ -43,20 +42,6 @@ vim.api.nvim_set_keymap(
 	"<leader>tc",
 	"<cmd>ColorizerToggle<CR>",
 	{ noremap = true, silent = true, desc = "Toggle Colorizer" }
-)
-
-vim.keymap.set("n", "<leader>tt", "<cmd>ToggleTerm<CR>", { noremap = true, silent = true, desc = "Toggle Terminal" })
-vim.keymap.set(
-	"n",
-	"<leader>tv",
-	"<cmd>ToggleTerm size=80 direction=vertical<CR>",
-	{ noremap = true, silent = true, desc = "Toggle Vertical Terminal" }
-)
-vim.keymap.set(
-	"n",
-	"<leader>tf",
-	"<cmd>ToggleTerm direction=float<CR>",
-	{ noremap = true, silent = true, desc = "Toggle Floating Terminal" }
 )
 
 -- Telescope
@@ -268,3 +253,30 @@ if has_mini_map then
 		end
 	end, { desc = "Toggle code minimap (mini.map)" })
 end
+
+-- whichkey style popup
+local wf = require("wf")
+local which_key = require("wf.builtin.which_key")
+-- Which Key
+--
+local function setup_prefix_picker(prefix, desc)
+	-- Define the keymap for the prefix
+	vim.keymap.set(
+		"n",
+		prefix,
+		which_key({
+			text_insert_in_advance = prefix,
+		}),
+		{
+			noremap = true,
+			silent = true,
+			desc = desc or string.format("Show keymaps starting with '%s'", prefix),
+		}
+	)
+end
+
+setup_prefix_picker("<leader>", "Comands staring with <leader>")
+setup_prefix_picker("y", "[wf.nvim] Yank commands")
+setup_prefix_picker("d", "[wf.nvim] Delete commands")
+setup_prefix_picker("g", "[wf.nvim] Git/Go commands")
+setup_prefix_picker("c", "[wf.nvim] Change commands")

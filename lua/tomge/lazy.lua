@@ -84,11 +84,15 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"folke/which-key.nvim",
-		event = "VeryLazy",
+		"Cassin01/wf.nvim",
+		version = false, -- or "tag = '*'" for stable
 		config = function()
-			require("tomge.plugins.which_key")
+			require("tomge.plugins.wf")
 		end,
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+		lazy = false,
 	},
 	{
 		"akinsho/toggleterm.nvim",
