@@ -114,8 +114,6 @@ nm("g#", "g#", "Search partial word backward")
 nm(":", ":", "Enter Command-line mode")
 nm(";", ";", "Repeat latest f, F, t, or T")
 nm("&", "&", "Repeat last substitute")
--- The default mapping for & is “repeat last :s” but many users prefer using ';'
--- for repeating f/t. This is included just as an example.
 
 --------------------------------------------------------------------------------
 -- WINDOW MANAGEMENT
@@ -153,9 +151,3 @@ nm("ZQ", "ZQ", "Quit without saving")
 --------------------------------------------------------------------------------
 nm("U", "U", "Restore last changed line")
 nm("<C-l>", "<C-l>", "Redraw screen / clear search highlight")
-
---------------------------------------------------------------------------------
--- Feel free to add or remove any mappings according to what you consider "default".
--- This should be placed in its own Lua file (e.g., lua/default_keymaps.lua)
--- and required from your init.lua (Neovim) or similar configuration.
---------------------------------------------------------------------------------
