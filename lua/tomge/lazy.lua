@@ -14,13 +14,33 @@ require("lazy").setup({
 	"numToStr/Comment.nvim", -- e.g. gc mapping
 	"mfussenegger/nvim-dap", -- debug adapter protocol for nvim
 	"hrsh7th/cmp-nvim-lsp", -- nvim cmp LSP source
-	"octaltree/cmp-look",
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			require("tomge.plugins.lualine")
+		end,
+	},
+	-- "octaltree/cmp-look",
+	{
+		"catppuccin/nvim",
+
+		name = "catppuccin",
+		priority = 1000,
+
+		config = function()
+			require("tomge.plugins.catppuccin")
+		end,
+	},
 	"f3fora/cmp-spell",
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
 	}, -- nicer debugging UI
-
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+	},
 	-- == SEPARATED OUT PLUGINS (require minimal stubs here) ==
 	{
 		"mfussenegger/nvim-dap-python",
@@ -31,6 +51,17 @@ require("lazy").setup({
 		},
 		config = function()
 			require("tomge.plugins.dap_python")
+		end,
+	},
+	{
+		"pwntester/octo.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope.nvim",
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = function()
+			require("tomge.plugins.octo")
 		end,
 	},
 	{
@@ -84,15 +115,11 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"Cassin01/wf.nvim",
-		version = false, -- or "tag = '*'" for stable
+		"folke/which-key.nvim",
+		event = "VeryLazy",
 		config = function()
-			require("tomge.plugins.wf")
+			require("tomge.plugins.whichkey")
 		end,
-		dependencies = {
-			"nvim-tree/nvim-web-devicons",
-		},
-		lazy = false,
 	},
 	{
 		"akinsho/toggleterm.nvim",
@@ -185,13 +212,6 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"folke/tokyonight.nvim",
-		priority = 1001,
-		config = function()
-			require("tomge.plugins.tokyonight")
-		end,
-	},
-	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",
 		config = function()
@@ -234,6 +254,7 @@ require("lazy").setup({
 			require("tomge.plugins.treesitter")
 		end,
 	},
+	require("tomge.plugins.python"),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {

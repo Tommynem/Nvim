@@ -254,29 +254,7 @@ if has_mini_map then
 	end, { desc = "Toggle code minimap (mini.map)" })
 end
 
--- whichkey style popup
-local wf = require("wf")
-local which_key = require("wf.builtin.which_key")
--- Which Key
---
-local function setup_prefix_picker(prefix, desc)
-	-- Define the keymap for the prefix
-	vim.keymap.set(
-		"n",
-		prefix,
-		which_key({
-			text_insert_in_advance = prefix,
-		}),
-		{
-			noremap = true,
-			silent = true,
-			desc = desc or string.format("Show keymaps starting with '%s'", prefix),
-		}
-	)
-end
 
-setup_prefix_picker("<leader>", "Comands staring with <leader>")
-setup_prefix_picker("y", "[wf.nvim] Yank commands")
-setup_prefix_picker("d", "[wf.nvim] Delete commands")
-setup_prefix_picker("g", "[wf.nvim] Git/Go commands")
-setup_prefix_picker("c", "[wf.nvim] Change commands")
+map("n", "<leader>gil", ":Octo issue list<CR>")
+map("n", "<leader>gic", ":Octo issue create<CR>")
+map("n", "<leader>gis", ":Octo issue search<CR>")

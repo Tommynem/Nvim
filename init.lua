@@ -36,5 +36,14 @@ vim.opt.path:append(".,/usr/include,")
 -- disable base file explorer
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-
 vim.opt.termguicolors = true
+
+local alpha = function()
+	return string.format("%x", math.floor(255 * vim.g.transparency or 0.8))
+end
+
+if vim.g.neovide then
+	vim.g.neovide_opacity = 0
+	vim.g.transparency = 0.8
+	vim.g.neovide_background_color = "#1b0f26"
+end
