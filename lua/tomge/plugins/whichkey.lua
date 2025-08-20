@@ -2,7 +2,13 @@ local wk = require("which-key")
 
 wk.setup({
 	preset = "modern",
-	delay = 200,
+	delay = function(ctx)
+		-- Don't delay for single character mappings like gd, gr
+		if ctx.keys and string.len(ctx.keys) == 2 and string.sub(ctx.keys, 1, 1) == "g" then
+			return 0
+		end
+		return 200
+	end,
 	expand = 1,
 	notify = false,
 	show_help = true,
@@ -173,6 +179,13 @@ wk.add({
 	{ "#", desc = "Search word under cursor backward" },
 	{ "n", desc = "Next search result" },
 	{ "N", desc = "Previous search result" },
+
+	-- LSP navigation (these get overridden by LSP when attached)
+	{ "gd", desc = "Goto Definition (LSP)" },
+	{ "gD", desc = "Goto Declaration (LSP)" },
+	{ "gr", desc = "Goto References (LSP)" },
+	{ "gI", desc = "Goto Implementation (LSP)" },
+	{ "K", desc = "Hover Documentation (LSP)" },
 
 	-- Text objects and operations
 	{ "d", group = "Delete" },

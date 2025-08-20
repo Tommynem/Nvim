@@ -55,6 +55,43 @@ local servers = {
 			},
 		},
 	},
+	pylsp = {
+		settings = {
+			pylsp = {
+				plugins = {
+					-- Formatter settings
+					black = { enabled = true },
+					isort = { enabled = true },
+
+					-- Linter settings
+					pylint = {
+						enabled = true,
+						args = { "--max-line-length=120", "--disable=C0111" },
+					},
+					flake8 = {
+						enabled = true,
+						maxLineLength = 120,
+						ignore = { "E203", "W503" }, -- Black compatibility
+					},
+					mypy = {
+						enabled = true,
+						live_mode = true,
+						strict = false,
+					},
+
+					-- Disable some default plugins
+					pycodestyle = { enabled = false }, -- Using flake8 instead
+					mccabe = { enabled = false },
+					pyflakes = { enabled = false }, -- Using flake8 instead
+					yapf = { enabled = false }, -- Using black instead
+				},
+			},
+		},
+	},
+	ruff = {
+		-- Use the new ruff LSP server instead of the deprecated ruff_lsp
+		-- Ruff LSP handles linting, pylsp handles language features
+	},
 }
 
 require("mason").setup()
@@ -62,13 +99,28 @@ local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
 	"stylua", -- Used to format Lua code
 })
-require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+
+-- Map server names to their mason package names
+local mason_package_names = {
+	pylsp = "python-lsp-server",
+	ruff = "ruff",
+	lua_ls = "lua-language-server",
+}
+
+-- Replace server names with correct mason package names
+local mason_ensure_installed = {}
+for _, server in ipairs(ensure_installed) do
+	table.insert(mason_ensure_installed, mason_package_names[server] or server)
+end
+
+require("mason-tool-installer").setup({ ensure_installed = mason_ensure_installed })
 
 require("mason-lspconfig").setup({
+	ensure_installed = { "lua_ls", "pylsp", "ruff" },
 	handlers = {
 		function(server_name)
 			local server = servers[server_name] or {}
-			-- Specific setup for pyright
+			-- Specific setup for pyright (if you had it)
 			if server_name == "pyright" then
 				server.settings = {
 					python = {
