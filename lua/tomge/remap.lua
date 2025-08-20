@@ -36,10 +36,10 @@ vim.keymap.set("n", "<C-e>", "<C-w>", { noremap = true, silent = true })
 -- FineCmdline keybinding
 vim.api.nvim_set_keymap("n", ":", "<cmd>FineCmdline<CR>", { silent = true })
 
--- Toggle Colorizer
+-- Toggle Colorizer (moved to avoid conflict with testing)
 vim.api.nvim_set_keymap(
 	"n",
-	"<leader>tc",
+	"<leader>Tc",
 	"<cmd>ColorizerToggle<CR>",
 	{ noremap = true, silent = true, desc = "Toggle Colorizer" }
 )
@@ -97,11 +97,11 @@ vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 
--- Custom Keymaps
-vim.api.nvim_set_keymap("n", "<leader>te", ":CsvViewToggle", { desc = "[T]omge toggle csv view" })
+-- Custom Keymaps (moved to avoid conflict with testing)
+vim.api.nvim_set_keymap("n", "<leader>Te", ":CsvViewToggle", { desc = "[T]oggle csv view" })
 
--- Custom replace ui
-vim.keymap.set("n", "<leader>tr", function()
+-- Custom replace ui (moved to avoid conflict with testing)
+vim.keymap.set("n", "<leader>Tr", function()
 	local snacks = require("snacks")
 
 	-- 1. Prompt for "Search text"
@@ -192,13 +192,47 @@ vim.keymap.set("n", "<leader>on", ":ObsidianNew<CR>", { desc = "Create a new not
 vim.keymap.set("n", "<leader>oo", ":ObsidianOpen<CR>", { desc = "Opens the current note in obsidian" })
 vim.keymap.set("n", "<leader>-", "i- [ ]<ESC>A", { desc = "Opens the current note in obsidian" })
 
--- debugging
+-- Debugging - Enhanced
 local dap = require("dap")
+local dapui = require("dapui")
+
+-- Basic debugging controls
 vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "[D]AP: Toggle [B]reakpoint" })
 vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "[D]AP: [C]ontinue" })
 vim.keymap.set("n", "<leader>dl", function()
 	dap.run(dap.configurations.python[1])
 end, { desc = "[D]AP: [L]aunch main.py" })
+
+-- Advanced debugging controls
+vim.keymap.set("n", "<leader>dB", function()
+	dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+end, { desc = "[D]AP: Conditional [B]reakpoint" })
+
+vim.keymap.set("n", "<leader>dr", dap.repl.open, { desc = "[D]AP: Open [R]EPL" })
+vim.keymap.set("n", "<leader>ds", dap.step_over, { desc = "[D]AP: [S]tep over" })
+vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "[D]AP: Step [I]nto" })
+vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "[D]AP: Step [O]ut" })
+vim.keymap.set("n", "<leader>dh", dap.step_back, { desc = "[D]AP: Step Back ([H]istory)" })
+vim.keymap.set("n", "<leader>dx", dap.terminate, { desc = "[D]AP: Terminate (e[X]it)" })
+vim.keymap.set("n", "<leader>dR", dap.run_to_cursor, { desc = "[D]AP: [R]un to cursor" })
+
+-- DAP UI controls
+vim.keymap.set("n", "<leader>du", dapui.toggle, { desc = "[D]AP: Toggle [U]I" })
+vim.keymap.set("n", "<leader>de", dapui.eval, { desc = "[D]AP: [E]val expression" })
+vim.keymap.set("v", "<leader>de", dapui.eval, { desc = "[D]AP: [E]val selection" })
+
+-- Python-specific debugging
+vim.keymap.set("n", "<leader>dm", function()
+	require("dap-python").test_method()
+end, { desc = "[D]AP: Debug test [M]ethod" })
+
+vim.keymap.set("n", "<leader>df", function()
+	require("dap-python").test_class()
+end, { desc = "[D]AP: Debug test class ([F]ile)" })
+
+vim.keymap.set("n", "<leader>dS", function()
+	require("dap-python").debug_selection()
+end, { desc = "[D]AP: Debug [S]election" })
 
 -- snacks keymaps
 local ok, snacks = pcall(require, "snacks")
@@ -221,8 +255,8 @@ map("n", "<leader>gb", function()
 	snacks.git.blame_line()
 end, { desc = "Git Blame line" })
 
--- Dismiss all notifications
-map("n", "<leader>td", function()
+-- Dismiss all notifications (moved to avoid conflict with testing)
+map("n", "<leader>Td", function()
 	snacks.notifier.hide()
 end, { desc = "Dismiss All Notifications" })
 
@@ -258,3 +292,59 @@ end
 map("n", "<leader>gil", ":Octo issue list<CR>")
 map("n", "<leader>gic", ":Octo issue create<CR>")
 map("n", "<leader>gis", ":Octo issue search<CR>")
+
+-- Testing and Coverage keybindings
+local testing = require("tomge.plugins.testing")
+testing.setup()
+
+-- Core testing commands
+vim.keymap.set("n", "<leader>tt", testing.run_tests, { desc = "[T]est: Run all [T]ests (make test)" })
+vim.keymap.set("n", "<leader>tc", testing.run_coverage, { desc = "[T]est: Run [C]overage (make coverage)" })
+vim.keymap.set("n", "<leader>tC", testing.run_test_coverage, { desc = "[T]est: Run tests + [C]overage" })
+vim.keymap.set("n", "<leader>tj", testing.generate_coverage_json, { desc = "[T]est: Generate coverage [J]SON" })
+
+-- File-specific testing
+vim.keymap.set("n", "<leader>tf", testing.run_current_file_tests, { desc = "[T]est: Run current [F]ile tests" })
+vim.keymap.set("n", "<leader>tm", testing.run_current_test, { desc = "[T]est: Run current [M]ethod/test" })
+
+-- Neotest integration
+vim.keymap.set("n", "<leader>tn", function()
+	require("neotest").run.run()
+end, { desc = "[T]est: Run [N]earest test (neotest)" })
+
+vim.keymap.set("n", "<leader>tF", function()
+	require("neotest").run.run(vim.fn.expand("%"))
+end, { desc = "[T]est: Run current [F]ile (neotest)" })
+
+vim.keymap.set("n", "<leader>ts", function()
+	require("neotest").summary.toggle()
+end, { desc = "[T]est: Toggle [S]ummary (neotest)" })
+
+vim.keymap.set("n", "<leader>to", function()
+	require("neotest").output.open({ enter = true })
+end, { desc = "[T]est: Show [O]utput (neotest)" })
+
+vim.keymap.set("n", "<leader>tO", function()
+	require("neotest").output_panel.toggle()
+end, { desc = "[T]est: Toggle [O]utput panel (neotest)" })
+
+-- Coverage display commands
+vim.keymap.set("n", "<leader>cc", function()
+	require("coverage").load(true)
+end, { desc = "[C]overage: Load/refresh [C]overage" })
+
+vim.keymap.set("n", "<leader>cs", function()
+	require("coverage").summary()
+end, { desc = "[C]overage: Show [S]ummary" })
+
+vim.keymap.set("n", "<leader>ct", function()
+	require("coverage").toggle()
+end, { desc = "[C]overage: [T]oggle display" })
+
+vim.keymap.set("n", "<leader>ch", function()
+	require("coverage").hide()
+end, { desc = "[C]overage: [H]ide display" })
+
+vim.keymap.set("n", "<leader>cl", function()
+	require("coverage").show()
+end, { desc = "[C]overage: Show/[L]oad display" })

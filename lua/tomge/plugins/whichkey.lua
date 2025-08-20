@@ -80,12 +80,12 @@ wk.add({
 	{ "<leader>s/", desc = "Search in Open Files" },
 	{ "<leader>sn", desc = "Search Neovim files" },
 
-	-- Toggle group
-	{ "<leader>t", group = "Toggle" },
-	{ "<leader>tc", desc = "Toggle Colorizer" },
-	{ "<leader>te", desc = "Toggle CSV view" },
-	{ "<leader>td", desc = "Dismiss All Notifications" },
-	{ "<leader>tr", desc = "Custom Search & Replace" },
+	-- Toggle group (moved to capital T to avoid conflict with testing)
+	{ "<leader>T", group = "Toggle" },
+	{ "<leader>Tc", desc = "Toggle Colorizer" },
+	{ "<leader>Te", desc = "Toggle CSV view" },
+	{ "<leader>Td", desc = "Dismiss All Notifications" },
+	{ "<leader>Tr", desc = "Custom Search & Replace" },
 
 	-- File group
 	{ "<leader>f", group = "File" },
@@ -118,11 +118,46 @@ wk.add({
 	{ "<leader>og", desc = "Grep Vault" },
 	{ "<leader>-", desc = "Create checkbox" },
 
-	-- Debug group
+	-- Debug group - Enhanced
 	{ "<leader>d", group = "Debug" },
 	{ "<leader>db", desc = "Toggle Breakpoint" },
+	{ "<leader>dB", desc = "Conditional Breakpoint" },
 	{ "<leader>dc", desc = "Continue" },
 	{ "<leader>dl", desc = "Launch main.py" },
+	{ "<leader>dr", desc = "Open REPL" },
+	{ "<leader>ds", desc = "Step over" },
+	{ "<leader>di", desc = "Step into" },
+	{ "<leader>do", desc = "Step out" },
+	{ "<leader>dh", desc = "Step back (history)" },
+	{ "<leader>dx", desc = "Terminate (exit)" },
+	{ "<leader>dR", desc = "Run to cursor" },
+	{ "<leader>du", desc = "Toggle UI" },
+	{ "<leader>de", desc = "Eval expression" },
+	{ "<leader>dm", desc = "Debug test method" },
+	{ "<leader>df", desc = "Debug test class (file)" },
+	{ "<leader>dS", desc = "Debug selection" },
+
+	-- Test group
+	{ "<leader>t", group = "Test" },
+	{ "<leader>tt", desc = "Run all tests (make test)" },
+	{ "<leader>tc", desc = "Run coverage (make coverage)" },
+	{ "<leader>tC", desc = "Run tests + coverage" },
+	{ "<leader>tj", desc = "Generate coverage JSON" },
+	{ "<leader>tf", desc = "Run current file tests" },
+	{ "<leader>tm", desc = "Run current method/test" },
+	{ "<leader>tn", desc = "Run nearest test (neotest)" },
+	{ "<leader>tF", desc = "Run current file (neotest)" },
+	{ "<leader>ts", desc = "Toggle summary (neotest)" },
+	{ "<leader>to", desc = "Show output (neotest)" },
+	{ "<leader>tO", desc = "Toggle output panel (neotest)" },
+
+	-- Coverage group
+	{ "<leader>c", group = "Coverage" },
+	{ "<leader>cc", desc = "Load/refresh coverage" },
+	{ "<leader>cs", desc = "Show summary" },
+	{ "<leader>ct", desc = "Toggle display" },
+	{ "<leader>ch", desc = "Hide display" },
+	{ "<leader>cl", desc = "Show/load display" },
 
 	-- Lazygit
 	{ "<leader>lg", desc = "Open Lazygit" },

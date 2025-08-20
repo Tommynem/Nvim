@@ -48,6 +48,7 @@ require("lazy").setup({
 		dependencies = {
 			"mfussenegger/nvim-dap",
 			"rcarriga/nvim-dap-ui",
+			"theHamsta/nvim-dap-virtual-text",
 		},
 		config = function()
 			require("tomge.plugins.dap_python")
@@ -255,6 +256,36 @@ require("lazy").setup({
 		end,
 	},
 	require("tomge.plugins.python"),
+	{
+		"andythigpen/nvim-coverage",
+		ft = "python",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("tomge.plugins.coverage").setup()
+		end,
+	},
+	{
+		"nvim-neotest/neotest",
+		dependencies = {
+			"nvim-neotest/nvim-nio",
+			"nvim-lua/plenary.nvim",
+			"antoinemadec/FixCursorHold.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-neotest/neotest-python",
+		},
+		lazy = true,
+		config = function()
+			require("neotest").setup({
+				adapters = {
+					require("neotest-python")({
+						dap = { justMyCode = false },
+						args = { "--log-level", "DEBUG" },
+						runner = "pytest",
+					}),
+				},
+			})
+		end,
+	},
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
