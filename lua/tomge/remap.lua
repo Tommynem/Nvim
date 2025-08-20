@@ -294,18 +294,33 @@ map("n", "<leader>gic", ":Octo issue create<CR>")
 map("n", "<leader>gis", ":Octo issue search<CR>")
 
 -- Testing and Coverage keybindings
-local testing = require("tomge.plugins.testing")
-testing.setup()
+-- Note: testing functions are loaded lazily to avoid circular dependencies
 
 -- Core testing commands
-vim.keymap.set("n", "<leader>tt", testing.run_tests, { desc = "[T]est: Run all [T]ests (make test)" })
-vim.keymap.set("n", "<leader>tc", testing.run_coverage, { desc = "[T]est: Run [C]overage (make coverage)" })
-vim.keymap.set("n", "<leader>tC", testing.run_test_coverage, { desc = "[T]est: Run tests + [C]overage" })
-vim.keymap.set("n", "<leader>tj", testing.generate_coverage_json, { desc = "[T]est: Generate coverage [J]SON" })
+vim.keymap.set("n", "<leader>tt", function()
+	require("tomge.plugins.testing").run_tests()
+end, { desc = "[T]est: Run all [T]ests (make test)" })
+
+vim.keymap.set("n", "<leader>tc", function()
+	require("tomge.plugins.testing").run_coverage()
+end, { desc = "[T]est: Run [C]overage (make coverage)" })
+
+vim.keymap.set("n", "<leader>tC", function()
+	require("tomge.plugins.testing").run_test_coverage()
+end, { desc = "[T]est: Run tests + [C]overage" })
+
+vim.keymap.set("n", "<leader>tj", function()
+	require("tomge.plugins.testing").generate_coverage_json()
+end, { desc = "[T]est: Generate coverage [J]SON" })
 
 -- File-specific testing
-vim.keymap.set("n", "<leader>tf", testing.run_current_file_tests, { desc = "[T]est: Run current [F]ile tests" })
-vim.keymap.set("n", "<leader>tm", testing.run_current_test, { desc = "[T]est: Run current [M]ethod/test" })
+vim.keymap.set("n", "<leader>tf", function()
+	require("tomge.plugins.testing").run_current_file_tests()
+end, { desc = "[T]est: Run current [F]ile tests" })
+
+vim.keymap.set("n", "<leader>tm", function()
+	require("tomge.plugins.testing").run_current_test()
+end, { desc = "[T]est: Run current [M]ethod/test" })
 
 -- Neotest integration
 vim.keymap.set("n", "<leader>tn", function()
