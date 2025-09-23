@@ -36,6 +36,9 @@ vim.keymap.set("n", "<C-e>", "<C-w>", { noremap = true, silent = true })
 -- FineCmdline keybinding
 vim.api.nvim_set_keymap("n", ":", "<cmd>FineCmdline<CR>", { silent = true })
 
+-- Floating terminal keybinding
+vim.api.nvim_set_keymap("n", "<leader>C", "<cmd>lua _FLOAT_TERM_TOGGLE()<CR>", {noremap = true, silent = true, desc = "Toggle floating terminal"})
+
 -- Toggle Colorizer (moved to avoid conflict with testing)
 vim.api.nvim_set_keymap(
 	"n",
@@ -363,3 +366,53 @@ end, { desc = "[C]overage: [H]ide display" })
 vim.keymap.set("n", "<leader>cl", function()
 	require("coverage").show()
 end, { desc = "[C]overage: Show/[L]oad display" })
+
+-- Web Development Specific Keybindings (2025)
+
+-- SvelteKit file switching (other.nvim)
+vim.keymap.set("n", "<leader>wr", function()
+	require("other-nvim").open()
+end, { desc = "[W]eb: Switch to [R]elated file (SvelteKit)" })
+
+vim.keymap.set("n", "<leader>wR", function()
+	require("other-nvim").openVSplit()
+end, { desc = "[W]eb: Open [R]elated file in split" })
+
+-- Tailwind Tools
+vim.keymap.set("n", "<leader>wt", function()
+	require("tailwind-tools").sort_selection()
+end, { desc = "[W]eb: Sort [T]ailwind classes" })
+
+vim.keymap.set("v", "<leader>wt", function()
+	require("tailwind-tools").sort_selection()
+end, { desc = "[W]eb: Sort [T]ailwind classes" })
+
+-- Web debugging keybindings (JavaScript/SvelteKit)
+vim.keymap.set("n", "<leader>dw", function()
+	local dap = require("dap")
+	-- Start SvelteKit dev server debugging
+	dap.run(dap.configurations.typescript[1])
+end, { desc = "[D]AP: Debug [W]eb (SvelteKit dev)" })
+
+vim.keymap.set("n", "<leader>dW", function()
+	local dap = require("dap")
+	-- Debug SvelteKit build
+	dap.run(dap.configurations.typescript[2])
+end, { desc = "[D]AP: Debug [W]eb (SvelteKit build)" })
+
+-- Enhanced formatting for web files
+vim.keymap.set("n", "<leader>wb", function()
+	local conform = require("conform")
+	conform.format({
+		formatters = { "biome" },
+		async = true,
+	})
+end, { desc = "[W]eb: Format with [B]iome" })
+
+vim.keymap.set("n", "<leader>wp", function()
+	local conform = require("conform")
+	conform.format({
+		formatters = { "prettier" },
+		async = true,
+	})
+end, { desc = "[W]eb: Format with [P]rettier" })

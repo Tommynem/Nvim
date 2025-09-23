@@ -65,6 +65,7 @@ wk.add({
 	-- Leader key mappings
 	{ "<leader>q", ":wqa<CR>", desc = "Save all and quit", mode = "n" },
 	{ "<leader>w", ":w<CR>", desc = "Write (save) file", mode = "n" },
+	{ "<leader>C", desc = "Toggle floating terminal", mode = "n" },
 
 	-- Search group
 	{ "<leader>s", group = "Search" },
@@ -136,6 +137,8 @@ wk.add({
 	{ "<leader>dm", desc = "Debug test method" },
 	{ "<leader>df", desc = "Debug test class (file)" },
 	{ "<leader>dS", desc = "Debug selection" },
+	{ "<leader>dw", desc = "Debug Web (SvelteKit dev)" },
+	{ "<leader>dW", desc = "Debug Web (SvelteKit build)" },
 
 	-- Test group
 	{ "<leader>t", group = "Test" },
@@ -158,6 +161,14 @@ wk.add({
 	{ "<leader>ct", desc = "Toggle display" },
 	{ "<leader>ch", desc = "Hide display" },
 	{ "<leader>cl", desc = "Show/load display" },
+
+	-- Web Development group (2025)
+	{ "<leader>w", group = "Web Development" },
+	{ "<leader>wr", desc = "Switch to related file (SvelteKit)" },
+	{ "<leader>wR", desc = "Open related file in split" },
+	{ "<leader>wt", desc = "Sort Tailwind classes" },
+	{ "<leader>wb", desc = "Format with Biome" },
+	{ "<leader>wp", desc = "Format with Prettier" },
 
 	-- Lazygit
 	{ "<leader>lg", desc = "Open Lazygit" },

@@ -10,6 +10,31 @@ require("conform").setup({
   end,
   formatters_by_ft = {
     lua = { "stylua" },
+    -- Modern Web Development (2025) - Biome first, Prettier fallback
+    javascript = { "biome", "prettier" },
+    typescript = { "biome", "prettier" },
+    javascriptreact = { "biome", "prettier" },
+    typescriptreact = { "biome", "prettier" },
+    json = { "biome", "prettier" },
+    jsonc = { "biome", "prettier" },
+    css = { "prettier" },
+    scss = { "prettier" },
+    html = { "prettier" },
+    svelte = { "prettier" }, -- Biome doesn't support Svelte yet
+    vue = { "prettier" },
+    astro = { "prettier" },
+    markdown = { "prettier" },
+    yaml = { "prettier" },
+    toml = { "prettier" },
+  },
+  -- Custom formatter configurations
+  formatters = {
+    biome = {
+      command = "biome",
+      args = { "format", "--stdin-file-path", "$FILENAME" },
+      stdin = true,
+      cwd = require("conform.util").root_file({ "biome.json", ".biomejs.json" }),
+    },
   },
 })
 

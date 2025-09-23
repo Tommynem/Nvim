@@ -10,7 +10,7 @@ require("obsidian").setup({
 	opts = {
 
 		completion = {
-			nvim_cmp = true,
+			nvim_cmp = false, -- Disabled in favor of blink.cmp
 		},
 		picker = {
 			name = "telescope.nvim",

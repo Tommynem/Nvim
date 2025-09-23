@@ -13,7 +13,7 @@ require("lazy").setup({
 	"tpope/vim-sleuth", -- auto indentation
 	"numToStr/Comment.nvim", -- e.g. gc mapping
 	"mfussenegger/nvim-dap", -- debug adapter protocol for nvim
-	"hrsh7th/cmp-nvim-lsp", -- nvim cmp LSP source
+	-- "hrsh7th/cmp-nvim-lsp", -- Removed: using blink.cmp instead
 	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -32,7 +32,7 @@ require("lazy").setup({
 			require("tomge.plugins.catppuccin")
 		end,
 	},
-	"f3fora/cmp-spell",
+	-- "f3fora/cmp-spell", -- Removed: blink.cmp handles spell checking natively
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
@@ -90,7 +90,7 @@ require("lazy").setup({
 	{
 		"akinsho/bufferline.nvim",
 		version = "*",
-		dependencies = "nvim-tree/nvim-web-devicons",
+		dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin/nvim" },
 		config = function()
 			require("tomge.plugins.bufferline")
 		end,
@@ -182,30 +182,31 @@ require("lazy").setup({
 			require("tomge.plugins.conform")
 		end,
 	},
-	{
-		"hrsh7th/nvim-cmp",
-		event = "InsertEnter",
-		dependencies = {
-			{
-				"L3MON4D3/LuaSnip",
-				build = (function()
-					if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-						return
-					end
-					return "make install_jsregexp"
-				end)(),
-				dependencies = {
-					-- "rafamadriz/friendly-snippets", ...
-				},
-			},
-			"saadparwaiz1/cmp_luasnip",
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-path",
-		},
-		config = function()
-			require("tomge.plugins.cmp")
-		end,
-	},
+	-- Removed nvim-cmp in favor of blink.cmp
+	-- {
+	-- 	"hrsh7th/nvim-cmp",
+	-- 	event = "InsertEnter",
+	-- 	dependencies = {
+	-- 		{
+	-- 			"L3MON4D3/LuaSnip",
+	-- 			build = (function()
+	-- 				if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+	-- 					return
+	-- 				end
+	-- 				return "make install_jsregexp"
+	-- 			end)(),
+	-- 			dependencies = {
+	-- 				-- "rafamadriz/friendly-snippets", ...
+	-- 			},
+	-- 		},
+	-- 		"saadparwaiz1/cmp_luasnip",
+	-- 		"hrsh7th/cmp-nvim-lsp",
+	-- 		"hrsh7th/cmp-path",
+	-- 	},
+	-- 	config = function()
+	-- 		require("tomge.plugins.cmp")
+	-- 	end,
+	-- },
 	{
 		"hat0uma/csvview.nvim",
 		config = function()
@@ -262,6 +263,249 @@ require("lazy").setup({
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
 			require("tomge.plugins.coverage").setup()
+		end,
+	},
+	-- Modern Web Development Plugins (2025)
+	{
+		"luckasRanarison/tailwind-tools.nvim",
+		name = "tailwind-tools",
+		build = ":UpdateRemotePlugins",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-telescope/telescope.nvim",
+			"neovim/nvim-lspconfig",
+		},
+		ft = { "html", "css", "scss", "javascript", "typescript", "jsx", "tsx", "svelte", "vue", "astro" },
+		config = function()
+			require("tailwind-tools").setup({
+				document_color = {
+					enabled = true,
+					kind = "inline",
+					inline_symbol = "󰝤 ",
+					debounce = 200,
+				},
+				conceal = {
+					enabled = false,
+					min_length = nil,
+					symbol = "󱏿",
+					highlight = {
+						fg = "#38BDF8",
+					},
+				},
+				custom_filetypes = { "svelte" },
+			})
+		end,
+	},
+	-- Visual Enhancement Plugins (2025)
+	{
+		"saghen/blink.cmp",
+		dependencies = "rafamadriz/friendly-snippets",
+		version = "*",
+		config = function()
+			require("tomge.plugins.blink_cmp")
+		end,
+	},
+	{
+		"nvim-zh/colorful-winsep.nvim",
+		config = function()
+			require("colorful-winsep").setup({
+				-- Updated API: no longer uses table format for highlight
+				hi = {
+					bg = "#1e1e2e", -- catppuccin base
+					fg = "#cba6f7", -- catppuccin mauve
+				},
+				interval = 30,
+				no_exec_files = { "packer", "TelescopePrompt", "mason", "CompetiTest", "NvimTree" },
+			})
+		end,
+	},
+	{
+		"HiPhish/rainbow-delimiters.nvim",
+		config = function()
+			local rainbow_delimiters = require("rainbow-delimiters")
+			require("rainbow-delimiters.setup").setup({
+				strategy = {
+					[""] = rainbow_delimiters.strategy["global"],
+					vim = rainbow_delimiters.strategy["local"],
+				},
+				query = {
+					[""] = "rainbow-delimiters",
+					lua = "rainbow-blocks",
+				},
+				priority = {
+					[""] = 110,
+					lua = 210,
+				},
+				highlight = {
+					"RainbowDelimiterRed",
+					"RainbowDelimiterYellow",
+					"RainbowDelimiterBlue",
+					"RainbowDelimiterOrange",
+					"RainbowDelimiterGreen",
+					"RainbowDelimiterViolet",
+					"RainbowDelimiterCyan",
+				},
+			})
+		end,
+	},
+	{
+		"rasulomaroff/reactive.nvim",
+		config = function()
+			require("reactive").setup({
+				builtin = {
+					cursorline = true,
+					cursor = true,
+					modemsg = true,
+				},
+				-- Catppuccin theme integration
+				load = { "catppuccin-mocha-cursor", "catppuccin-mocha-cursorline" },
+			})
+		end,
+	},
+	{
+		"RRethy/vim-illuminate",
+		config = function()
+			require("illuminate").configure({
+				providers = {
+					"lsp",
+					"treesitter",
+					"regex",
+				},
+				delay = 100,
+				filetype_overrides = {},
+				filetypes_denylist = {
+					"dirbuf",
+					"dirvish",
+					"fugitive",
+				},
+				filetypes_allowlist = {},
+				modes_denylist = {},
+				modes_allowlist = {},
+				providers_regex_syntax_denylist = {},
+				providers_regex_syntax_allowlist = {},
+				under_cursor = true,
+				large_file_cutoff = nil,
+				large_file_overrides = nil,
+				min_count_to_highlight = 1,
+				should_enable = function(bufnr)
+					return true
+				end,
+				case_insensitive_regex = false,
+			})
+		end,
+	},
+	{
+		"shellRaining/hlchunk.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			require("hlchunk").setup({
+				chunk = {
+					enable = true,
+					priority = 15,
+					style = {
+						{ fg = "#806d9c" },
+						{ fg = "#c21f30" },
+					},
+					use_treesitter = true,
+					chars = {
+						horizontal_line = "─",
+						vertical_line = "│",
+						left_top = "╭",
+						left_bottom = "╰",
+						right_arrow = ">",
+					},
+					textobject = "",
+					max_file_size = 1024 * 1024,
+					error_sign = true,
+				},
+				indent = {
+					enable = false, -- Disable since we have indent-blankline
+				},
+				line_num = {
+					enable = false,
+				},
+				blank = {
+					enable = false,
+				},
+			})
+		end,
+	},
+	{
+		"chentoast/marks.nvim",
+		config = function()
+			require("marks").setup({
+				default_mappings = true,
+				builtin_marks = { ".", "<", ">", "^" },
+				cyclic = true,
+				force_write_shada = false,
+				refresh_interval = 250,
+				sign_priority = { lower = 10, upper = 15, builtin = 8, bookmark = 20 },
+				excluded_filetypes = {},
+				excluded_buftypes = { "nofile" },
+				bookmark_0 = {
+					sign = "⚑",
+					virt_text = "hello world",
+					annotate = false,
+				},
+				mappings = {},
+			})
+		end,
+	},
+	{
+		"rgroli/other.nvim",
+		config = function()
+			require("other-nvim").setup({
+				mappings = {
+					-- SvelteKit file mappings
+					{
+						pattern = "/src/routes/(.*)/+page.svelte$",
+						target = "/src/routes/%1/+page.server.ts",
+						context = "server",
+					},
+					{
+						pattern = "/src/routes/(.*)/+page.server.ts$",
+						target = "/src/routes/%1/+page.svelte",
+						context = "component",
+					},
+					{
+						pattern = "/src/routes/(.*)/+layout.svelte$",
+						target = "/src/routes/%1/+layout.server.ts",
+						context = "server",
+					},
+					{
+						pattern = "/src/routes/(.*)/+layout.server.ts$",
+						target = "/src/routes/%1/+layout.svelte",
+						context = "component",
+					},
+					-- Component mappings
+					{
+						pattern = "/src/lib/components/(.*).svelte$",
+						target = "/src/lib/components/%1.test.ts",
+						context = "test",
+					},
+					{
+						pattern = "/src/lib/components/(.*).test.ts$",
+						target = "/src/lib/components/%1.svelte",
+						context = "component",
+					},
+				},
+			})
+		end,
+	},
+	{
+		"b0o/schemastore.nvim",
+		ft = { "json", "jsonc" },
+	},
+	{
+		"mfussenegger/nvim-dap",
+		dependencies = {
+			"rcarriga/nvim-dap-ui",
+			"theHamsta/nvim-dap-virtual-text",
+			"nvim-neotest/nvim-nio",
+		},
+		ft = { "javascript", "typescript", "svelte", "vue", "astro", "jsx", "tsx" },
+		config = function()
+			require("tomge.plugins.dap_web")
 		end,
 	},
 	{

@@ -44,7 +44,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+-- Updated for blink.cmp instead of nvim-cmp
+local ok, blink_cmp = pcall(require, "blink.cmp")
+if ok then
+	capabilities = vim.tbl_deep_extend("force", capabilities, blink_cmp.get_lsp_capabilities())
+else
+	-- Fallback to default capabilities if blink.cmp isn't available
+	capabilities = vim.lsp.protocol.make_client_capabilities()
+end
 local servers = {
 	lua_ls = {
 		settings = {
@@ -92,12 +99,103 @@ local servers = {
 		-- Use the new ruff LSP server instead of the deprecated ruff_lsp
 		-- Ruff LSP handles linting, pylsp handles language features
 	},
+	-- Web Development Language Servers (2025)
+	ts_ls = {
+		settings = {
+			typescript = {
+				preferences = {
+					includeCompletionsForModuleExports = true,
+				},
+			},
+			javascript = {
+				preferences = {
+					includeCompletionsForModuleExports = true,
+				},
+			},
+		},
+	},
+	svelte = {
+		settings = {
+			svelte = {
+				plugin = {
+					typescript = {
+						enabled = true,
+						diagnostics = { enable = true },
+						hover = { enable = true },
+						documentSymbols = { enable = true },
+						completions = {
+							enable = true,
+							emmet = true,
+						},
+						codeActions = { enable = true },
+						selectionRange = { enable = true },
+						rename = { enable = true },
+					},
+					css = { enable = true },
+					html = { enable = true },
+				},
+			},
+		},
+		on_attach = function(client, bufnr)
+			-- Auto-update imports when TypeScript files change
+			vim.api.nvim_create_autocmd({"BufWritePost"}, {
+				pattern = {"*.js", "*.ts"},
+				callback = function()
+					vim.lsp.buf.code_action({
+						filter = function(action)
+							return action.kind and string.match(action.kind, "source")
+						end,
+						apply = true
+					})
+				end,
+			})
+		end,
+	},
+	tailwindcss = {
+		settings = {
+			tailwindCSS = {
+				experimental = {
+					classRegex = {
+						-- Svelte class directives
+						"class:([\\w-]+)",
+						-- Template literals
+						"tw`([^`]*)",
+						-- clsx, classnames, etc.
+						"class(?:Name)?\\s*[=:]\\s*['\"`]([^'\"`]*)['\"`]",
+					},
+				},
+			},
+		},
+	},
+	html = {},
+	cssls = {
+		settings = {
+			css = {
+				validate = true,
+				lint = {
+					unknownAtRules = "ignore", -- Ignore unknown Tailwind directives
+				},
+			},
+		},
+	},
+	jsonls = {
+		settings = {
+			json = {
+				schemas = require('schemastore').json.schemas(),
+				validate = { enable = true },
+			},
+		},
+	},
 }
 
 require("mason").setup()
 local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
 	"stylua", -- Used to format Lua code
+	-- Modern web development tools (2025)
+	"biome", -- Modern ESLint + Prettier replacement (Rust-based, 15x faster)
+	"prettier", -- Fallback formatter for files Biome doesn't support
+	"js-debug-adapter", -- Modern JavaScript debugging
 })
 
 -- Map server names to their mason package names
@@ -105,6 +203,13 @@ local mason_package_names = {
 	pylsp = "python-lsp-server",
 	ruff = "ruff",
 	lua_ls = "lua-language-server",
+	-- Web development servers
+	ts_ls = "typescript-language-server",
+	svelte = "svelte-language-server",
+	tailwindcss = "tailwindcss-language-server",
+	html = "html-lsp",
+	cssls = "css-lsp",
+	jsonls = "json-lsp",
 }
 
 -- Replace server names with correct mason package names
@@ -116,7 +221,11 @@ end
 require("mason-tool-installer").setup({ ensure_installed = mason_ensure_installed })
 
 require("mason-lspconfig").setup({
-	ensure_installed = { "lua_ls", "pylsp", "ruff" },
+	ensure_installed = {
+		"lua_ls", "pylsp", "ruff",
+		-- Web development servers
+		"ts_ls", "svelte", "tailwindcss", "html", "cssls", "jsonls"
+	},
 	handlers = {
 		function(server_name)
 			local server = servers[server_name] or {}
