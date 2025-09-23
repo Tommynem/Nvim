@@ -1,7 +1,7 @@
 return {
 	-- Python-specific tools (LSP servers are configured in lspconfig.lua)
 	{
-		"williamboman/mason-tool-installer.nvim",
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		dependencies = {
 			"williamboman/mason.nvim",
 		},

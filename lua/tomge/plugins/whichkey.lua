@@ -64,7 +64,6 @@ wk.setup({
 wk.add({
 	-- Leader key mappings
 	{ "<leader>q", ":wqa<CR>", desc = "Save all and quit", mode = "n" },
-	{ "<leader>w", ":w<CR>", desc = "Write (save) file", mode = "n" },
 	{ "<leader>C", desc = "Toggle floating terminal", mode = "n" },
 
 	-- Search group
@@ -284,8 +283,6 @@ wk.add({
 	{ "m", desc = "Set mark" },
 	{ "'", desc = "Jump to mark line" },
 	{ "`", desc = "Jump to mark position" },
-	{ "<C-o>", desc = "Jump back in jump list", mode = "n" },
-	{ "<C-i>", desc = "Jump forward in jump list", mode = "n" },
 
 	-- Folding
 	{ "za", desc = "Toggle fold" },
@@ -304,8 +301,7 @@ wk.add({
 	{ "<C-x><C-l>", desc = "Line completion", mode = "i" },
 	{ "<C-x><C-o>", desc = "Omni completion", mode = "i" },
 
-	-- Command mode
-	{ ":", desc = "Command mode" },
+	-- Note: : is mapped to FineCmdline
 	{ "!", desc = "External command" },
 	{ "q:", desc = "Command history" },
 	{ "q/", desc = "Search history" },

@@ -31,6 +31,10 @@ vim.opt.concealcursor = "nc"
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 vim.g.python3_host_prog = "/opt/homebrew/bin/python3.12"
 vim.g.netrw_browsex_viewer = "open"
+
+-- Disable unused providers to avoid warnings
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 vim.opt.path:append(".,/usr/include,")
 
 -- disable base file explorer

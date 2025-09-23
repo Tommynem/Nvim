@@ -189,14 +189,18 @@ local servers = {
 }
 
 require("mason").setup()
-local ensure_installed = vim.tbl_keys(servers or {})
-vim.list_extend(ensure_installed, {
+
+-- LSP servers only
+local lsp_servers = vim.tbl_keys(servers or {})
+
+-- Formatting tools and debuggers (NOT LSP servers)
+local mason_tools = {
 	"stylua", -- Used to format Lua code
 	-- Modern web development tools (2025)
 	"biome", -- Modern ESLint + Prettier replacement (Rust-based, 15x faster)
 	"prettier", -- Fallback formatter for files Biome doesn't support
 	"js-debug-adapter", -- Modern JavaScript debugging
-})
+}
 
 -- Map server names to their mason package names
 local mason_package_names = {
@@ -212,13 +216,8 @@ local mason_package_names = {
 	jsonls = "json-lsp",
 }
 
--- Replace server names with correct mason package names
-local mason_ensure_installed = {}
-for _, server in ipairs(ensure_installed) do
-	table.insert(mason_ensure_installed, mason_package_names[server] or server)
-end
-
-require("mason-tool-installer").setup({ ensure_installed = mason_ensure_installed })
+-- Install tools (formatters, debuggers, etc.) via mason-tool-installer
+require("mason-tool-installer").setup({ ensure_installed = mason_tools })
 
 require("mason-lspconfig").setup({
 	ensure_installed = {
