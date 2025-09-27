@@ -79,7 +79,7 @@ local telescope = require("telescope.builtin")
 vim.keymap.set("n", "<leader>of", function()
 	telescope.find_files({
 		prompt_title = "Search Vault Files",
-		cwd = "/Users/tomge/Library/Mobile Documents/iCloud~md~obsidian/Documents/Everything all at once",
+		cwd = vim.env.OBSIDIAN_VAULT_PATH or vim.fn.expand("~/Documents/ObsidianVault"),
 	})
 end, { desc = "Search Vault Files" })
 
@@ -87,7 +87,7 @@ end, { desc = "Search Vault Files" })
 vim.keymap.set("n", "<leader>og", function()
 	telescope.live_grep({
 		prompt_title = "Grep Vault",
-		cwd = "/Users/tomge/Library/Mobile Documents/iCloud~md~obsidian/Documents/Everything all at once",
+		cwd = vim.env.OBSIDIAN_VAULT_PATH or vim.fn.expand("~/Documents/ObsidianVault"),
 	})
 end, { desc = "Grep Vault" })
 -- Neovim config search shortcut

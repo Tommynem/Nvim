@@ -65,20 +65,19 @@ require("lazy").setup({
 			require("tomge.plugins.octo")
 		end,
 	},
-	{
-		"epwalsh/obsidian.nvim",
-		lazy = false,
-		ft = "markdown",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope.nvim",
-			"nvim-treesitter/nvim-treesitter",
-		},
-		config = function()
-			require("tomge.plugins.obsidian")
-		end,
-	},
-	-- lazy.nvim
+	-- {
+	-- 	"epwalsh/obsidian.nvim",
+	-- 	lazy = false,
+	-- 	ft = "markdown",
+	-- 	dependencies = {
+	-- 		"nvim-lua/plenary.nvim",
+	-- 		"nvim-telescope/telescope.nvim",
+	-- 		"nvim-treesitter/nvim-treesitter",
+	-- 	},
+	-- 	config = function()
+	-- 		require("tomge.plugins.obsidian")
+	-- 	end,
+	-- },
 	{
 		"folke/snacks.nvim",
 		lazy = false,
@@ -182,31 +181,6 @@ require("lazy").setup({
 			require("tomge.plugins.conform")
 		end,
 	},
-	-- Removed nvim-cmp in favor of blink.cmp
-	-- {
-	-- 	"hrsh7th/nvim-cmp",
-	-- 	event = "InsertEnter",
-	-- 	dependencies = {
-	-- 		{
-	-- 			"L3MON4D3/LuaSnip",
-	-- 			build = (function()
-	-- 				if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-	-- 					return
-	-- 				end
-	-- 				return "make install_jsregexp"
-	-- 			end)(),
-	-- 			dependencies = {
-	-- 				-- "rafamadriz/friendly-snippets", ...
-	-- 			},
-	-- 		},
-	-- 		"saadparwaiz1/cmp_luasnip",
-	-- 		"hrsh7th/cmp-nvim-lsp",
-	-- 		"hrsh7th/cmp-path",
-	-- 	},
-	-- 	config = function()
-	-- 		require("tomge.plugins.cmp")
-	-- 	end,
-	-- },
 	{
 		"hat0uma/csvview.nvim",
 		config = function()
@@ -298,8 +272,22 @@ require("lazy").setup({
 	},
 	-- Visual Enhancement Plugins (2025)
 	{
+		"L3MON4D3/LuaSnip",
+		version = "v2.*",
+		build = "make install_jsregexp",
+		dependencies = {
+			"rafamadriz/friendly-snippets",
+		},
+		config = function()
+			require("tomge.plugins.luasnip")
+		end,
+	},
+	{
 		"saghen/blink.cmp",
-		dependencies = "rafamadriz/friendly-snippets",
+		dependencies = {
+			"rafamadriz/friendly-snippets",
+			"L3MON4D3/LuaSnip",
+		},
 		version = "*",
 		config = function()
 			require("tomge.plugins.blink_cmp")
@@ -507,6 +495,9 @@ require("lazy").setup({
 		config = function()
 			require("tomge.plugins.dap_web")
 		end,
+	},
+	{
+		"windwp/nvim-ts-autotag",
 	},
 	{
 		"nvim-neotest/neotest",

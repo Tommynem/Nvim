@@ -3,8 +3,8 @@ require("obsidian").setup({
 
 	workspaces = {
 		{
-			name = "everything",
-			path = "/Users/tomge/Library/Mobile Documents/iCloud~md~obsidian/Documents/Everything all at once",
+			name = "vault",
+			path = vim.env.OBSIDIAN_VAULT_PATH or vim.fn.expand("~/Documents/ObsidianVault"),
 		},
 	},
 	opts = {
